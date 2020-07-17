@@ -1,0 +1,15 @@
+<div class="row mt-5">
+  <div class="col-md-6 m-auto">
+    <div class="card card-body text-center">
+      <p>welcome</p>
+      <%- include ("./partials/post.ejs") %> <% result.map((item) => { %>
+
+      <h3><%= item.name %></h3>
+      <a href="products/<%= item.id %>"
+        ><button type="button" class="btn btn-danger">Delete</button></a
+      >
+
+      <% }); %>
+    </div>
+  </div>
+</div>

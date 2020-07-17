@@ -16,6 +16,7 @@ module.exports = {
       user: req.user,
     });
   },
+
   create: async (req, res) => {
     try {
       const { email, password, fullname, username, confirmPassword } = req.body;
