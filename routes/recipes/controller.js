@@ -11,22 +11,35 @@ module.exports = {
       console.log(error);
     }
   },
-  get: async (req, res) => {
+  getAllRecipes: async (req, res) => {
     try {
-      const result = await Recipe.find().populate("UserID");
+      const result = await Recipe.find();
 
       res.send({ message: "Add Recipe successfull", data: result });
     } catch (error) {
       console.log(error);
     }
   },
-  getByUserID: async (req, res) => {
+  getUserRecipes: async (req, res) => {
     try {
       const { UserID } = req.params;
 
-      const result = await Recipe.find({ UserID }).populate("UserID");
+      const result = await Recipe.find({ UserID }).populate("AuthorID");
 
-      res.send({ message: "Add Recipe successfull", data: result });
+      console.log(result);
+      res.send({ message: "ok", data: result });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  editUserRecipe: async (req, res) => {
+    try {
+      const { UserID } = req.params;
+
+      const result = await Recipe.find({ UserID }).populate("AuthorID");
+
+      console.log(result);
+      res.send({ message: "ok", data: result });
     } catch (error) {
       console.log(error);
     }
