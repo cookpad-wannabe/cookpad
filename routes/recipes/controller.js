@@ -12,7 +12,6 @@ module.exports = {
       console.log(error);
     }
   },
-
   create: async (req, res) => {
     try {
       const result = await Recipe.create({ ...req.body });
@@ -23,13 +22,47 @@ module.exports = {
     }
   },
 
+  getAllRecipes: async (req, res) => {
+    try {
+      const result = await Recipe.find();
+
+      res.send({ message: "Add Recipe successfull", data: result });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+ 
   delete: async (req, res) => {
     try {
       const { id } = req.params;
-
       const result = await Recipe.findByIdAndDelete(id);
 
       res.send({ message: "DeleteRecipessuccessfull", data: result });
+    } catch (error) {
+      console.log(error);
+    }
+  },    
+
+  getUserRecipes: async (req, res) => {
+    try {
+      const { UserID } = req.params;
+      
+      const result = await Recipe.find({ UserID }).populate("AuthorID");
+
+      console.log(result);
+      res.send({ message: "ok", data: result });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  editUserRecipe: async (req, res) => {
+    try {
+      const { UserID } = req.params;
+
+      const result = await Recipe.find({ UserID }).populate("AuthorID");
+
+      console.log(result);
+      res.send({ message: "ok", data: result });
     } catch (error) {
       console.log(error);
     }
