@@ -1,22 +1,22 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const ProductSchema = new Schema({
+const RecipeSchema = new Schema({
   name: {
     type: String,
     required: true,
   },
-  price: {
-    type: Number,
-    required: true,
-  },
-  quantity: {
-    type: Number,
-    required: true,
-  },
-  UserID: {
+  AuthorID: {
     type: Schema.Types.ObjectId,
     ref: "users",
+  },
+  procedures: {
+    type: Array,
+    required: true,
+  },
+  ingredients: {
+    type: Array,
+    required: true,
   },
   createdAt: {
     type: Date,
@@ -28,6 +28,6 @@ const ProductSchema = new Schema({
   },
 });
 
-const Product = mongoose.model("products", ProductSchema);
+const Recipes = mongoose.model("recipes", RecipeSchema);
 
-module.exports = Product;
+module.exports = Recipes;
