@@ -16,6 +16,7 @@ module.exports = {
       user: req.user,
     });
   },
+
   getAllUsers: async (req, res) => {
     try {
       const results = await User.find();
@@ -25,6 +26,7 @@ module.exports = {
       console.log(error);
     }
   },
+
   create: async (req, res) => {
     try {
       const { email, password, fullname, username, confirmPassword } = req.body;
