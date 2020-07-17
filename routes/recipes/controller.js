@@ -1,5 +1,5 @@
 const { hashed } = require("../../helpers");
-const { Product } = require("../../models");
+const { Recipe } = require("../../models");
 
 module.exports = {
   create: async (req, res) => {
