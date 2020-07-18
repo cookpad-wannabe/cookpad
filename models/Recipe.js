@@ -6,6 +6,14 @@ const RecipeSchema = new Schema({
     type: String,
     required: true,
   },
+  portion: {
+    type: Number,
+    // required: true,
+  },
+  duration: {
+    type: String,
+    // required: true,
+  },
   AuthorID: {
     type: Schema.Types.ObjectId,
     ref: "users",
