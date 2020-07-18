@@ -16,7 +16,7 @@ module.exports = {
   create: async (req, res) => {
     try {
       const result = await Recipe.create({ ...req.body });
-      console.log(Recipe);
+
       res.send({ message: "AddRecipessuccessfull", data: result });
     } catch (error) {
       console.log(error);

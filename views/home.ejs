@@ -5,7 +5,10 @@
       <%- include ("./partials/post.ejs") %> <% result.map((item) => { %>
 
       <h3><%= item.name %></h3>
-      <a href="recipes/<%= item.id %>"
+      <form action="recipes/<%=item.id%>/user_method=DELETE">
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </form>
+      <a href="recipes/<%= item.id %>/delete?_method=DELETE"
         ><button type="button" class="btn btn-danger">Delete</button></a
       >
 
