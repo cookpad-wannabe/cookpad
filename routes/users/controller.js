@@ -2,30 +2,10 @@ const { hashed } = require("../../helpers");
 const { User } = require("../../models");
 
 module.exports = {
-  home: (req, res) => {
-    res.render("welcome");
+  pageRegister: (req, res) => {
+    res.render("register", { user: req.user });
   },
-  login: (req, res) => {
-    res.render("login");
-  },
-  register: (req, res) => {
-    res.render("register");
-  },
-  dashboard: (req, res) => {
-    res.render("dashboard", {
-      user: req.user,
-    });
-  },
-  getAllUsers: async (req, res) => {
-    try {
-      const results = await User.find();
-
-      res.send({ message: "UsersData:", data: results });
-    } catch (error) {
-      console.log(error);
-    }
-  },
-  create: async (req, res) => {
+  register: async (req, res) => {
     try {
       const { email, password, fullname, username, confirmPassword } = req.body;
       const errors = [];
@@ -53,11 +33,11 @@ module.exports = {
         });
       } else {
         if (!result) {
-          const hashPassword = await hashed(password);
+          const hashedPassword = await hashed(password);
 
           const result = await User.create({
             email,
-            password: hashPassword,
+            password: hashedPassword,
             fullname,
             username,
           });
@@ -76,8 +56,42 @@ module.exports = {
       console.log(error);
     }
   },
-  logout: (req, res) => {
+  pageLogin: (req, res) => {
+    res.render("login", { user: req.user });
+  },
+  login: (req, res) => {
+    res.render("dashboard", {
+      user: req.user,
+    });
+  },
+  edit: (req, res) => {
+    res.render("edit-resep");
+  },
+  getAllUsers: async (req, res) => {
+    try {
+      const results = await User.find();
+
+      res.send({ message: "UsersData:", data: results });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  logout: async (req, res) => {
     req.logout();
-    res.redirect("/users/login");
+    res.redirect("/");
+  },
+
+  getUserRecipes: async (req, res) => {
+    try {
+      const { UserID } = req.params;
+
+      const result = await Recipe.find({ UserID }).populate("AuthorID");
+
+      console.log(result);
+      res.send({ message: "ok", data: result });
+    } catch (error) {
+      console.log(error);
+    }
   },
 };

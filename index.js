@@ -33,10 +33,13 @@ app.use((req, res, next) => {
 });
 
 app.use(expressLayout);
+app.use(express.static("views"));
 app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
-  res.redirect("http://localhost:5005/users/register");
+  res.render("home.ejs", {
+    user: req.user,
+  });
 });
 app.use("/users", require("./routes/users"));
 app.use("/recipes", require("./routes/recipes"));
