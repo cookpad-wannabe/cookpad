@@ -1,6 +1,5 @@
 const { Recipe, User } = require("../../models");
 
-const path = require("path");
 const fs = require("fs");
 // for handling upload imgae
 const multer = require("multer");
@@ -10,6 +9,59 @@ upload = upload.single("photo");
 
 module.exports = {
   upload,
+  // home
+  getAllRecipes: async (req, res) => {
+    try {
+      const recipes = await Recipe.find();
+
+      res.render("home", {
+        user: req.user,
+        recipes,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  getRecipe: async (req, res, next) => {
+    const { recipeID } = req.params;
+    try {
+      const recipe = await Recipe.findById(recipeID);
+      const publisher = await User.findById(recipe.AuthorID);
+
+      res.render("recipe.ejs", {
+        recipe,
+        publisher,
+        user: req.user,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  getRecipeImage: async (req, res, next) => {
+    try {
+      const image = await Recipe.findById(req.params.recipeID);
+      res.set("Content-Type", image.photo.contentType);
+      res.send(image.photo.data);
+    } catch (error) {
+      next(error);
+    }
+  },
+  // collections
+  getUserRecipe: async (req, res, next) => {
+    try {
+      const recipes = await Recipe.find({
+        AuthorID: req.params.UserID,
+      });
+
+      res.render("user-collections", {
+        user: req.user,
+        recipes,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  // add recipe
   edit: async (req, res, next) => {
     try {
       console.log(req.user.id, "id user");
@@ -83,56 +135,6 @@ module.exports = {
       res.send({ message: "Add Recipe successfull", data: result });
     } catch (error) {
       console.log(error);
-      next(error);
-    }
-  },
-  getAllRecipes: async (req, res) => {
-    try {
-      const recipes = await Recipe.find();
-
-      res.render("home", {
-        user: req.user,
-        recipes,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  },
-  getRecipe: async (req, res, next) => {
-    const { recipeID } = req.params;
-    try {
-      const recipe = await Recipe.findById(recipeID);
-      const publisher = await User.findById(recipe.AuthorID);
-
-      res.render("recipe.ejs", {
-        recipe,
-        publisher,
-        user: req.user,
-      });
-    } catch (error) {
-      next(error);
-    }
-  },
-  getUserRecipe: async (req, res, next) => {
-    try {
-      const recipes = await Recipe.find({
-        AuthorID: req.params.UserID,
-      });
-
-      res.render("user-collections", {
-        user: req.user,
-        recipes,
-      });
-    } catch (error) {
-      next(error);
-    }
-  },
-  getRecipeImage: async (req, res, next) => {
-    try {
-      const image = await Recipe.findById(req.params.recipeID);
-      res.set("Content-Type", image.photo.contentType);
-      res.send(image.photo.data);
-    } catch (error) {
       next(error);
     }
   },
