@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const { forwardAuthenticate, ensureAuthenticate } = require("../../config");
 const controller = require("./controller");
-const Recipe = require("../../models/Recipe");
 
 // home
 router.get("/", forwardAuthenticate, require("./controller").getAllRecipes);

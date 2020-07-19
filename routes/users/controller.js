@@ -2,6 +2,15 @@ const { hashed } = require("../../helpers");
 const { User, Recipe } = require("../../models");
 
 module.exports = {
+  getAllUsers: async (req, res) => {
+    try {
+      const results = await User.find();
+
+      res.send({ message: "UsersData:", data: results });
+    } catch (error) {
+      console.log(error);
+    }
+  },
   pageRegister: (req, res) => {
     res.render("register", { user: req.user });
   },
@@ -59,46 +68,13 @@ module.exports = {
   pageLogin: (req, res) => {
     res.render("login", { user: req.user });
   },
-  dashboard: async (req, res) => {
+  home: async (req, res) => {
     try {
-      const recipes = await Recipe.find();
-
-      res.render("home", {
-        user: req.user,
-        recipes,
-      });
+      res.redirect("/");
     } catch (error) {
       console.log(error);
     }
   },
-  getRecipe: async (req, res, next) => {
-    const { recipeID } = req.params;
-    try {
-      const recipe = await Recipe.findById(recipeID);
-      const publisher = await User.findById(recipe.AuthorID);
-
-      res.render("recipe.ejs", {
-        recipe,
-        publisher,
-        user: req.user,
-      });
-    } catch (error) {
-      next(error);
-    }
-  },
-  edit: (req, res) => {
-    res.render("edit-resep");
-  },
-  getAllUsers: async (req, res) => {
-    try {
-      const results = await User.find();
-
-      res.send({ message: "UsersData:", data: results });
-    } catch (error) {
-      console.log(error);
-    }
-  },
-
   logout: async (req, res) => {
     req.logout();
     res.redirect("/");

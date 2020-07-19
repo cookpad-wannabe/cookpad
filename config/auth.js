@@ -16,7 +16,7 @@ const forwardAuthenticate = (req, res, next) => {
     return next();
   }
 
-  res.redirect("/users/dashboard");
+  res.redirect("/");
 };
 
 module.exports = {
