@@ -1,0 +1,20 @@
+<div class="columns is-mobile">
+  <div class="column is-three-fifths is-offset-one-fifth">
+    <% recipes.forEach((item)=> { %>
+    <article class="media">
+      <figure class="media-left">
+        <p class="image is-64x64">
+          <img src="/recipes/image/<%= item._id %>" alt="recipe-image" />
+        </p>
+      </figure>
+      <div class="media-content">
+        <div class="content">
+          <h2>
+            <a href="/recipes/page/<%= item._id %> "><%= item.name %> </a>
+          </h2>
+        </div>
+      </div>
+    </article>
+    <% }) %>
+  </div>
+</div>

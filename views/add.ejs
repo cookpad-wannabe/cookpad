@@ -1,0 +1,132 @@
+<div class="columns is-mobile">
+  <div class="column is-three-fifths is-offset-one-fifth">
+    <form action="/recipes/add" method="POST" enctype="multipart/form-data">
+      <div class="field">
+        <div class="control">
+          <section class="section" style="background-color: #cefeff;">
+            <div class="columns">
+              <div class="column">
+                <input
+                  class="input is-large"
+                  type="text"
+                  name="name"
+                  placeholder="Title Recipe"
+                />
+              </div>
+            </div>
+
+            <div class="columns">
+              <div class="column is-half">Portion</div>
+              <div class="column is-half">
+                <input
+                  class="input"
+                  type="number"
+                  name="portion"
+                  placeholder="Portion(s)"
+                  style="font-size: medium; font-weight: bold;"
+                />
+              </div>
+            </div>
+            <div class="columns">
+              <div class="column is-half">Duration</div>
+              <div class="column is-half">
+                <input
+                  class="input"
+                  type="text"
+                  name="duration"
+                  placeholder="Duration"
+                  style="font-size: medium; font-weight: bold;"
+                />
+              </div>
+            </div>
+          </section>
+          <br />
+          <section class="section" style="background-color: #cefeff;">
+            <div class="columns">
+              <div class="column">
+                <h2 class="title is-2">Ingredients</h2>
+              </div>
+            </div>
+            <div class="columns">
+              <div class="column">
+                <input
+                  class="input"
+                  type="text"
+                  name="ingredients"
+                  placeholder="ingredients 1"
+                />
+              </div>
+            </div>
+            <div class="columns">
+              <div class="column">
+                <input
+                  class="input"
+                  type="text"
+                  name="ingredients"
+                  placeholder="ingredients 2"
+                />
+              </div>
+            </div>
+          </section>
+          <br />
+          <section class="section" style="background-color: #cefeff;">
+            <div class="columns">
+              <div class="column">
+                <h2 class="title is-2">Steps</h2>
+              </div>
+            </div>
+            <div class="columns">
+              <div class="column">
+                <input
+                  class="input"
+                  type="text"
+                  name="procedures"
+                  placeholder="step 1"
+                />
+              </div>
+            </div>
+            <div class="columns">
+              <div class="column">
+                <input
+                  class="input"
+                  type="text"
+                  name="procedures"
+                  placeholder="step 2"
+                />
+              </div>
+            </div>
+          </section>
+          <br />
+          <section class="section" style="background-color: #cefeff;">
+            <div class="columns">
+              <div class="column">
+                <div class="file has-name">
+                  <label class="file-label">
+                    <input class="file-input" type="file" name="photo" />
+                    <span class="file-cta">
+                      <span class="file-icon">
+                        <i class="fas fa-upload"></i>
+                      </span>
+                      <span class="file-label">
+                        Choose a file…
+                      </span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="section">
+            <div class="buttons is-right">
+              <input
+                type="submit"
+                class="button is-success"
+                value="Add Recipe"
+              />
+            </div>
+          </section>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
