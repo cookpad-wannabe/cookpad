@@ -5,6 +5,7 @@ const controller = require("./controller");
 // home
 router.get("/", require("./controller").getAllRecipes);
 router.get("/:recipeID", require("./controller").getRecipe);
+router.get("/image/:recipeID", require("./controller").getRecipeImage);
 // add recipe page
 router.get("/new", ensureAuthenticate, require("./controller").addPage);
 router.post("/", ensureAuthenticate, controller.upload, controller.create);
@@ -15,7 +16,6 @@ router.get(
   ensureAuthenticate,
   require("./controller").getUserRecipe
 );
-router.get("/image/:recipeID", require("./controller").getRecipeImage);
 
 // edit
 router.get("/edit/:recipeID", ensureAuthenticate, require("./controller").edit);
