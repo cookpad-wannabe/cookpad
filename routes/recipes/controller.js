@@ -100,6 +100,7 @@ module.exports = {
       next(error);
     }
   },
+  // recipes/:recipeID
   edit: async (req, res, next) => {
     try {
       console.log(req.user.id, "id user");
@@ -139,5 +140,12 @@ module.exports = {
       console.log(error);
       next(error);
     }
+  },
+  deleteRecipe: async (req, res, next) => {
+    const { recipeID } = req.params;
+    try {
+      await Recipe.findByIdAndDelete({ _id: recipeID });
+      res.redirect("/recipes");
+    } catch (error) {}
   },
 };

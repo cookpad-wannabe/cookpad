@@ -26,4 +26,10 @@ router.put(
   controller.saveEdit
 );
 
+// delete
+router.delete(
+  "/:recipeID",
+  ensureAuthenticate,
+  require("./controller").deleteRecipe
+);
 module.exports = router;
