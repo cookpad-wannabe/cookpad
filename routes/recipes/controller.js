@@ -44,14 +44,13 @@ module.exports = {
         { new: true }
       );
       console.log(result.id);
-      res.redirect("/users/dashboard/" + result.id);
+      res.redirect("/recipes/" + result.id);
     } catch (error) {
       console.log(error);
       next(error);
     }
   },
   addPage: async (req, res) => {
-    console.log(req.user._id);
     res.render("add-resep.ejs", {
       user: req.user,
     });

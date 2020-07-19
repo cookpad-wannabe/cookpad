@@ -3,12 +3,8 @@ const { forwardAuthenticate, ensureAuthenticate } = require("../../config");
 const controller = require("./controller");
 
 // home
-router.get("/", forwardAuthenticate, require("./controller").getAllRecipes);
-router.get(
-  "/:recipeID",
-  forwardAuthenticate,
-  require("./controller").getRecipe
-);
+router.get("/", require("./controller").getAllRecipes);
+router.get("/:recipeID", require("./controller").getRecipe);
 // add recipe page
 router.get("/new", ensureAuthenticate, require("./controller").addPage);
 router.post("/", ensureAuthenticate, controller.upload, controller.create);
