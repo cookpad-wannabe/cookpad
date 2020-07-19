@@ -86,7 +86,7 @@ module.exports = {
           contentType: req.file.mimetype,
         };
       } else {
-        const imageData = fs.readFileSync("./resources/banner-edit.png");
+        const imageData = fs.readFileSync("./resources/default.png");
         recipeInfo.photo = {
           data: imageData,
           contentType: "image/png",
@@ -94,7 +94,7 @@ module.exports = {
         };
       }
       const result = await Recipe.create(recipeInfo);
-      res.send({ message: "Add Recipe successfull", data: result });
+      res.redirect("/recipes/page/" + result.id);
     } catch (error) {
       console.log(error);
       next(error);
