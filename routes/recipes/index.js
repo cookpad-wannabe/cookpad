@@ -4,11 +4,11 @@ const controller = require("./controller");
 
 // home
 router.get("/", require("./controller").getAllRecipes);
-router.get("/:recipeID", require("./controller").getRecipe);
+router.get("/page/:recipeID", require("./controller").getRecipe);
 router.get("/image/:recipeID", require("./controller").getRecipeImage);
 // add recipe page
-router.get("/new", ensureAuthenticate, require("./controller").addPage);
-router.post("/", ensureAuthenticate, controller.upload, controller.create);
+router.get("/add", ensureAuthenticate, require("./controller").addPage);
+router.post("/add", ensureAuthenticate, controller.upload, controller.create);
 
 // collections page
 router.get(

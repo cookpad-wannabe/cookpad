@@ -62,6 +62,44 @@ module.exports = {
     }
   },
   // add recipe
+  addPage: (req, res) => {
+    try {
+      res.render("add", { user: req.user });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  create: async (req, res, next) => {
+    console.log(req.file);
+    try {
+      const recipeInfo = {
+        name: req.body.name,
+        portion: req.body.portion,
+        duration: req.body.duration,
+        ingredients: req.body.ingredients,
+        procedures: req.body.procedures,
+        AuthorID: req.user._id,
+      };
+      if (req.file && req.file.buffer) {
+        recipeInfo.photo = {
+          data: req.file.buffer,
+          contentType: req.file.mimetype,
+        };
+      } else {
+        const imageData = fs.readFileSync("./resources/banner-edit.png");
+        recipeInfo.photo = {
+          data: imageData,
+          contentType: "image/png",
+          // image.src = "https://coubsecureassets-a.akamaihd.net/assets/default-avatars/256-f0d0b2891080bf9c2797d255af3027291aef12c38c6d4a88053f223218ba9ebc.png";
+        };
+      }
+      const result = await Recipe.create(recipeInfo);
+      res.send({ message: "Add Recipe successfull", data: result });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  },
   edit: async (req, res, next) => {
     try {
       console.log(req.user.id, "id user");
@@ -96,43 +134,7 @@ module.exports = {
         { new: true }
       );
       console.log(result.id);
-      res.redirect("/recipes/" + result.id);
-    } catch (error) {
-      console.log(error);
-      next(error);
-    }
-  },
-  addPage: async (req, res) => {
-    res.render("add-resep.ejs", {
-      user: req.user,
-    });
-  },
-  create: async (req, res, next) => {
-    console.log(req.file);
-    try {
-      const recipeInfo = {
-        name: req.body.name,
-        portion: req.body.portion,
-        duration: req.body.duration,
-        ingredients: req.body.ingredients,
-        procedures: req.body.procedures,
-        AuthorID: req.user._id,
-      };
-      if (req.file && req.file.buffer) {
-        recipeInfo.photo = {
-          data: req.file.buffer,
-          contentType: req.file.mimetype,
-        };
-      } else {
-        const imageData = fs.readFileSync("./resources/banner-edit.png");
-        recipeInfo.photo = {
-          data: imageData,
-          contentType: "image/png",
-          // image.src = "https://coubsecureassets-a.akamaihd.net/assets/default-avatars/256-f0d0b2891080bf9c2797d255af3027291aef12c38c6d4a88053f223218ba9ebc.png";
-        };
-      }
-      const result = await Recipe.create(recipeInfo);
-      res.send({ message: "Add Recipe successfull", data: result });
+      res.redirect("/recipes/page/" + result.id);
     } catch (error) {
       console.log(error);
       next(error);
