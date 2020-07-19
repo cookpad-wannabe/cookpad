@@ -26,6 +26,10 @@ const RecipeSchema = new Schema({
     type: Array,
     required: true,
   },
+  photo: {
+    data: Buffer,
+    contentType: String,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

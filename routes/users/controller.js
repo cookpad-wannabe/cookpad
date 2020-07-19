@@ -1,5 +1,5 @@
 const { hashed } = require("../../helpers");
-const { User } = require("../../models");
+const { User, Recipe } = require("../../models");
 
 module.exports = {
   pageRegister: (req, res) => {
@@ -59,10 +59,32 @@ module.exports = {
   pageLogin: (req, res) => {
     res.render("login", { user: req.user });
   },
-  login: (req, res) => {
-    res.render("dashboard", {
-      user: req.user,
-    });
+  dashboard: async (req, res) => {
+    try {
+      const recipes = await Recipe.find();
+
+      res.render("home", {
+        user: req.user,
+        recipes,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  getRecipe: async (req, res, next) => {
+    const { recipeID } = req.params;
+    try {
+      const recipe = await Recipe.findById(recipeID);
+      const publisher = await User.findById(recipe.AuthorID);
+
+      res.render("recipe.ejs", {
+        recipe,
+        publisher,
+        user: req.user,
+      });
+    } catch (error) {
+      next(error);
+    }
   },
   edit: (req, res) => {
     res.render("edit-resep");
@@ -80,18 +102,5 @@ module.exports = {
   logout: async (req, res) => {
     req.logout();
     res.redirect("/");
-  },
-
-  getUserRecipes: async (req, res) => {
-    try {
-      const { UserID } = req.params;
-
-      const result = await Recipe.find({ UserID }).populate("AuthorID");
-
-      console.log(result);
-      res.send({ message: "ok", data: result });
-    } catch (error) {
-      console.log(error);
-    }
   },
 };

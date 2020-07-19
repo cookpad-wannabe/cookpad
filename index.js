@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const passport = require("passport");
 const flash = require("connect-flash");
+const methodOverride = require("method-override");
 const session = require("express-session");
 const expressLayout = require("express-ejs-layouts");
 
@@ -34,13 +35,10 @@ app.use((req, res, next) => {
 
 app.use(expressLayout);
 app.use(express.static("views"));
+app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
 
-app.get("/", (req, res) => {
-  res.render("home.ejs", {
-    user: req.user,
-  });
-});
+app.get("/", require("./routes/recipes/controller").getAllRecipes);
 app.use("/users", require("./routes/users"));
 app.use("/recipes", require("./routes/recipes"));
 

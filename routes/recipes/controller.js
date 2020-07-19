@@ -1,64 +1,140 @@
-const { hashed } = require("../../helpers");
-const { Recipe } = require("../../models");
+const { Recipe, User } = require("../../models");
+
+const path = require("path");
+const fs = require("fs");
+// for handling upload imgae
+const multer = require("multer");
+const storage = multer.memoryStorage();
+let upload = multer({ storage: storage });
+upload = upload.single("photo");
 
 module.exports = {
-  edit: async (req, res) => {
+  upload,
+  edit: async (req, res, next) => {
     try {
+      console.log(req.user.id, "id user");
       const id = req.params.recipeID;
-      const recipe = await Recipe.findById(id).exec();
-      res.render("edit-resep", { recipe });
-      res.send({ result: recipe });
-      console.log(recipe);
+      const recipe = await Recipe.findById(id);
+      console.log("edit resep", recipe);
+      res.render("edit-resep", { recipe, user: req.user });
     } catch (error) {
-      console.error(error);
+      next(error);
     }
   },
-  saveEdit: async (req, res) => {
-    const id = req.params.recipeID;
-
+  saveEdit: async (req, res, next) => {
     try {
-      await Recipe.findOneAndUpdate({ id }, { $set: { name } });
-      const editedRecipe = await Recipe.findById(id).exec();
-      console.log(editedRecipe);
-      res.send({
-        message: `recipe successfully updated`,
-        updatedRecipe: editedRecipe,
-      });
-      res.redirect("/users/dashboard");
+      const updatedInfo = {
+        name: req.body.name,
+        portion: req.body.portion,
+        duration: req.body.duration,
+        ingredients: req.body.ingredients,
+        procedures: req.body.procedures,
+        AuthorID: req.user._id,
+      };
+      if (req.file && req.file.buffer) {
+        updatedInfo.photo = {
+          data: req.file.buffer,
+          contentType: req.file.mimetype,
+        };
+      }
+
+      const result = await Recipe.findByIdAndUpdate(
+        req.params.recipeID,
+        updatedInfo,
+        { new: true }
+      );
+      console.log(result.id);
+      res.redirect("/users/dashboard/" + result.id);
     } catch (error) {
       console.log(error);
-
-      res.send(error);
+      next(error);
     }
   },
-  create: async (req, res) => {
+  addPage: async (req, res) => {
+    console.log(req.user._id);
+    res.render("add-resep.ejs", {
+      user: req.user,
+    });
+  },
+  create: async (req, res, next) => {
+    console.log(req.file);
     try {
-      const result = await Recipe.create({ ...req.body });
-
+      const recipeInfo = {
+        name: req.body.name,
+        portion: req.body.portion,
+        duration: req.body.duration,
+        ingredients: req.body.ingredients,
+        procedures: req.body.procedures,
+        AuthorID: req.user._id,
+      };
+      if (req.file && req.file.buffer) {
+        recipeInfo.photo = {
+          data: req.file.buffer,
+          contentType: req.file.mimetype,
+        };
+      } else {
+        const imageData = fs.readFileSync("./resources/banner-edit.png");
+        recipeInfo.photo = {
+          data: imageData,
+          contentType: "image/png",
+          // image.src = "https://coubsecureassets-a.akamaihd.net/assets/default-avatars/256-f0d0b2891080bf9c2797d255af3027291aef12c38c6d4a88053f223218ba9ebc.png";
+        };
+      }
+      const result = await Recipe.create(recipeInfo);
       res.send({ message: "Add Recipe successfull", data: result });
     } catch (error) {
       console.log(error);
+      next(error);
     }
   },
   getAllRecipes: async (req, res) => {
     try {
-      const result = await Recipe.find();
+      const recipes = await Recipe.find();
 
-      res.send({ message: "Add Recipe successfull", data: result });
+      res.render("home", {
+        user: req.user,
+        recipes,
+      });
     } catch (error) {
       console.log(error);
     }
   },
-  editUserRecipe: async (req, res) => {
+  getRecipe: async (req, res, next) => {
+    const { recipeID } = req.params;
     try {
-      const { UserID } = req.params;
+      const recipe = await Recipe.findById(recipeID);
+      const publisher = await User.findById(recipe.AuthorID);
 
-      const result = await Recipe.find({ UserID }).populate("AuthorID");
-
-      console.log(result);
-      res.send({ message: "ok", data: result });
+      res.render("recipe.ejs", {
+        recipe,
+        publisher,
+        user: req.user,
+      });
     } catch (error) {
-      console.log(error);
+      next(error);
+    }
+  },
+  getUserRecipe: async (req, res, next) => {
+    try {
+      const recipes = await Recipe.find({
+        AuthorID: req.params.UserID,
+      });
+
+      res.render("user-collections", {
+        user: req.user,
+        recipes,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  getRecipeImage: async (req, res, next) => {
+    try {
+      const image = await Recipe.findById(req.params.recipeID);
+      res.set("Content-Type", image.photo.contentType);
+      res.send(image.photo.data);
+    } catch (error) {
+      next(error);
     }
   },
 };

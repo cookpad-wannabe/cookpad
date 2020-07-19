@@ -1,0 +1,16 @@
+<div class="container">
+  <% recipes.forEach((item)=> { %>
+  <div class="card">
+    <div class="card-image">
+      <figure class="image is-4by3">
+        <img src="/recipes/image/<%= item._id %>" alt="recipe-image" />
+      </figure>
+    </div>
+    <div class="card-content">
+      <div class="content">
+        <h2><a href="/recipes/<%= item._id %> "><%= item.name %> </a></h2>
+      </div>
+    </div>
+  </div>
+  <% }) %>
+</div>

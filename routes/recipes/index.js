@@ -1,22 +1,34 @@
 const router = require("express").Router();
 const { forwardAuthenticate, ensureAuthenticate } = require("../../config");
+const controller = require("./controller");
+const Recipe = require("../../models/Recipe");
 
-router.post("/", ensureAuthenticate, require("./controller").create);
-router.get("/", ensureAuthenticate, require("./controller").getAllRecipes);
+// home
+router.get("/", forwardAuthenticate, require("./controller").getAllRecipes);
 router.get(
-  "/edit/:recipeID",
+  "/:recipeID",
   forwardAuthenticate,
-  require("./controller").edit
+  require("./controller").getRecipe
 );
-router.put(
-  "/edit/:recipeID",
-  forwardAuthenticate,
-  require("./controller").saveEdit
-);
-router.put(
-  "/edit/:UserID",
+// add recipe page
+router.get("/new", ensureAuthenticate, require("./controller").addPage);
+router.post("/", ensureAuthenticate, controller.upload, controller.create);
+
+// collections page
+router.get(
+  "/collections/:UserID",
   ensureAuthenticate,
-  require("./controller").editUserRecipe
+  require("./controller").getUserRecipe
+);
+router.get("/image/:recipeID", require("./controller").getRecipeImage);
+
+// edit
+router.get("/edit/:recipeID", ensureAuthenticate, require("./controller").edit);
+router.put(
+  "/edit/:recipeID",
+  ensureAuthenticate,
+  controller.upload,
+  controller.saveEdit
 );
 
 module.exports = router;

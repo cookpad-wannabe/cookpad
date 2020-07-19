@@ -30,10 +30,10 @@
           Home
         </a>
         <% if (user) { %>
-        <a href="/users/<%= user._id %>/recipes" class="navbar-item"
+        <a href="/recipes/collections/<%= user._id %>" class="navbar-item"
           >Collections</a
         >
-        <a href="/recipes" class="navbar-item">Add Recipe</a>
+        <a href="/recipes/new" class="navbar-item">Add Recipe</a>
         <% } %>
       </div>
 

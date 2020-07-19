@@ -11,19 +11,22 @@ router.get(
 router.post("/register", require("./controller").register);
 router.get("/login", forwardAuthenticate, require("./controller").pageLogin);
 router.post("/login", (req, res, next) => {
-  router.get("/dashboard", ensureAuthenticate, require("./controller").login);
+  router.get(
+    "/dashboard",
+    ensureAuthenticate,
+    require("./controller").dashboard
+  );
   passport.authenticate("local", {
     successRedirect: "/users/dashboard",
     failureRedirect: "/users/login",
     failureFlash: true,
   })(req, res, next);
 });
-router.get("/logout", require("./controller").logout);
-
 router.get(
-  "/:userId/recipes",
+  "/dashboard/:recipeID",
   ensureAuthenticate,
-  require("./controller").getUserRecipes
+  require("./controller").getRecipe
 );
+router.get("/logout", require("./controller").logout);
 
 module.exports = router;
