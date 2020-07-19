@@ -1,12 +1,17 @@
 <div class="columns is-mobile">
   <div class="column is-three-fifths is-offset-one-fifth">
     <h2 class="title is-2"><%= recipe.name %></h2>
-    <h6 class="title is-6">Created by <%= publisher.username %></h6>
+
     <% if(user!==undefined) { %> <% if(user.id === publisher.id) { %>
-    <a href="/recipes/edit/<%= recipe.id %>"><button>Edit</button></a>
-    <form method="POST" action="/recipes/<%= recipe.id %>?_method=DELETE">
-      <button>Delete</button>
-    </form>
+    <h6 class="title is-6">Created by <%= publisher.username %></h6>
+    <a href="/recipes/edit/<%= recipe.id %>"
+      ><button class="button is-success">Edit</button></a
+    >
+    <a
+      href="/recipes/<%= recipe.id %>/delete?_method=DELETE"
+      onclick="return confirm('Are You Sure?')"
+      ><button class="button is-success">Delete</button></a
+    >
     <% } %> <% } %>
 
     <img src="/recipes/image/<%= recipe.id %>" />

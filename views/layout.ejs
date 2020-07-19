@@ -22,7 +22,7 @@
       defer
       src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
     ></script>
-    <title>Node.js & Passport Login App</title>
+    <title>Recipe Corner App</title>
   </head>
   <body>
     <%- include('./partials/header.ejs') %>
@@ -45,4 +45,21 @@
     ></script>
     <%- include('./partials/footer.ejs') %>
   </body>
+  <script>
+    function addIngredient() {
+      console.log("l");
+      const columns = document.createElement("div");
+      columns.setAttribute("class", "columns");
+      columns.innerHTML = `
+              <div class="column">
+                <input
+                  class="input"
+                  type="text"
+                  name="ingredients"
+                  placeholder="ingredients 2"
+                />
+              </div>`;
+      document.querySelector(".ingredients").appendChild("columns");
+    }
+  </script>
 </html>

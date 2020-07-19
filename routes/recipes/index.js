@@ -1,6 +1,12 @@
 const router = require("express").Router();
 const { forwardAuthenticate, ensureAuthenticate } = require("../../config");
 const controller = require("./controller");
+const methodOverride = require("method-override");
+router.use(
+  methodOverride("_method", {
+    methods: ["POST", "GET", "PUT", "DELETE"],
+  })
+);
 
 // home
 router.get("/", require("./controller").getAllRecipes);
@@ -28,7 +34,7 @@ router.put(
 
 // delete
 router.delete(
-  "/:recipeID",
+  "/:recipeID/delete",
   ensureAuthenticate,
   require("./controller").deleteRecipe
 );
