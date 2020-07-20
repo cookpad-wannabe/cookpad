@@ -2,19 +2,32 @@
   <div class="column is-three-fifths is-offset-one-fifth">
     <h2 class="title is-2"><%= recipe.name %></h2>
 
-    <% if(user!==undefined) { %> <% if(user.id === publisher.id) { %>
     <h6 class="title is-6">Created by <%= publisher.username %></h6>
-    <a href="/recipes/edit/<%= recipe.id %>"
-      ><button class="button is-success">Edit</button></a
-    >
-    <a
-      href="/recipes/<%= recipe.id %>/delete?_method=DELETE"
-      onclick="return confirm('Are You Sure?')"
-      ><button class="button is-success">Delete</button></a
-    >
-    <% } %> <% } %>
 
     <img src="/recipes/image/<%= recipe.id %>" />
+
+    <% if(user!==undefined) { %> <% if(user.id === publisher.id) { %>
+    <div class="field is-grouped">
+      <a href="/recipes/edit/<%= recipe.id %>"
+        ><button class="button is-success is-rounded" style="margin: 5px;">
+          Edit
+        </button></a
+      >
+      <form
+        method="POST"
+        action="/recipes/<%= recipe.id %>/delete?_method=DELETE"
+      >
+        <button
+          class="button is-success is-rounded"
+          style="margin: 5px;"
+          onclick="return confirm('Are You Sure?')"
+        >
+          Delete
+        </button>
+      </form>
+    </div>
+    <% } %> <% } %>
+
     <div class="columns">
       <div class="column is-half">Portion</div>
       <div class="column is-half"><%= recipe.portion %></div>
@@ -23,5 +36,43 @@
       <div class="column is-half">Duration</div>
       <div class="column is-half"><%= recipe.duration %></div>
     </div>
+    <br />
+    <div class="columns">
+      <div class="column">
+        <h2 class="title is-2">Ingredients</h2>
+      </div>
+    </div>
+    <% recipe.ingredients.forEach(element => { %>
+    <div class="columns">
+      <div class="column">
+        <div class="content">
+          <ul>
+            <li>
+              <%= element %>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <% }); %>
+    <br />
+    <div class="columns">
+      <div class="column">
+        <h2 class="title is-2">Steps</h2>
+      </div>
+    </div>
+    <% recipe.procedures.forEach(element => { %>
+    <div class="columns">
+      <div class="column">
+        <div class="content">
+          <ul>
+            <li>
+              <%= element %>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <% }); %>
   </div>
 </div>
